@@ -1,0 +1,28 @@
+{
+  "name": "gaming-team",
+  "version": "1.0.0",
+  "description": "JS-Web SoftUni former exam task",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MiroZe/Gaming-Team.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MiroZe/Gaming-Team/issues"
+  },
+  "homepage": "https://github.com/MiroZe/Gaming-Team#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "express-handlebars": "^7.0.7",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.2.1"
+  }
+}
