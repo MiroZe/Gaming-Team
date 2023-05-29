@@ -1,4 +1,4 @@
-const { register, verifyToken } = require('../sevices/userService');
+const { register,  login } = require('../sevices/userService');
 const parseError = require('../utils/parseError');
 
 const authController = require('express').Router();
@@ -43,6 +43,28 @@ authController.post('/register', async (req,res)=> {
    
 
 
+})
+
+
+
+authController.post('/login', async (req,res) => {
+   
+    try {
+        if(req.body.email == '' || req.body.password == '') {
+            throw new Error('All fields are required!')
+        }
+        const token = await login(req.body.email, req.body.password)
+        res.cookie('token', token)
+        res.redirect('/')
+    } catch (error) {
+
+        res.render('login', {
+            title: 'Login Page',
+            errors: parseError(error),
+            email :req.body.email
+        })
+        
+    }
 })
 
 module.exports = authController

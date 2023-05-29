@@ -3,7 +3,7 @@ const { verifyToken } = require("../sevices/userService")
 
 const hasUser = (req, res, next) => {
 
-    const token = req.user.token
+    const token = req.cookies.token
     if(token) {
 
         try {
