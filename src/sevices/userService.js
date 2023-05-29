@@ -47,9 +47,7 @@ async function login(email, password) {
 
 }
 
-async function logout() {
 
-}
 
 
 function verifyToken(token) {
