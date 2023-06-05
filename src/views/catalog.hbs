@@ -14,8 +14,9 @@
                     <p><span>Genre: </span>{{genre}}</p>
                     <p><span>Price: </span>${{price}}</p>
                 </div>
-
+                {{#if hasUser}}
                 <a href="/game/{{_id}}/details" class="btn-details">Details</a>
+                {{/if}}
             </div>
             {{/each}}
           

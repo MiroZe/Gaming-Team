@@ -51,7 +51,7 @@ authController.post('/register', async (req,res)=> {
 authController.post('/login', async (req,res) => {
    
     try {
-        console.log(req.body.email);
+       
         if(req.body.email == '' || req.body.password == '') {
             throw new Error('All fields are required!')
         }
