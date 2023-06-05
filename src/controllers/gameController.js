@@ -1,21 +1,35 @@
 const gameController = require('express').Router();
+const hasUser = require('../middleware/userControl');
 const { createGame } = require('../sevices/gameService');
 const parseErrors = require('../utils/parseError');
+const guard = require('../middleware/guard');
+const { getAllGames } = require('../sevices/gameService');
 
 
 
 
 
-gameController.get('/catalog', (req,res) => {
+gameController.get('/catalog', async (req,res) => {
 
-    res.render('catalog', {
-        title: 'Catalog Page'
-    })
+    try {
+
+        const allGames = await getAllGames().lean()
+        
+
+        res.render('catalog', {
+            title: 'Catalog Page',
+            allGames 
+        })
+        
+    } catch (error) {
+        
+    }
+
 
 })
 
 
-gameController.get('/create', (req,res) => {
+gameController.get('/create',guard, (req,res) => {
 
     res.render('create', {
         title: 'Create Game Page'

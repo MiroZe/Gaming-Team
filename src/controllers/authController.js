@@ -16,6 +16,7 @@ authController.get('/register', (req,res)=> {
 authController.post('/register', async (req,res)=> {
 
     try {
+        
       
         if(req.body.password < 4 ) {
             throw new Error('Password should be at least four characters long')
@@ -50,6 +51,7 @@ authController.post('/register', async (req,res)=> {
 authController.post('/login', async (req,res) => {
    
     try {
+        console.log(req.body.email);
         if(req.body.email == '' || req.body.password == '') {
             throw new Error('All fields are required!')
         }

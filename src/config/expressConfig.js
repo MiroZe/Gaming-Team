@@ -15,7 +15,6 @@ const expressConfig = (app) => {
     app.use(cookieParser())
     app.use(express.static('src/public'))
     app.use(hasUser)
-    
     app.use(trimBody)
 
 

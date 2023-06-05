@@ -2,24 +2,30 @@
     <section class="game-market">
         <h1>Game Trade Code</h1>
         <div class="offer-list">
+          {{#if allGames}}
+            {{#each allGames}}
             <div class="game">
                 <div class="game-img">
-                    <img src="./static/images/witcher-3.jpg">
+                    <img src="{{imageUrl}}">
                 </div>
                 <div class="game-info">
-                    <h1>The Witcher 3</h1>
-                    <p><span>Platform: </span>PC</p>
-                    <p><span>Genre: </span>RPG</p>
-                    <p><span>Price: </span>$23</p>
+                    <h1>{{name}}</h1>
+                    <p><span>Platform: </span>{{platform}}</p>
+                    <p><span>Genre: </span>{{genre}}</p>
+                    <p><span>Price: </span>${{price}}</p>
                 </div>
 
-                <a href="#" class="btn-details">Details</a>
+                <a href="/game/{{_id}}/details" class="btn-details">Details</a>
             </div>
+            {{/each}}
+          
             
           
         </div>
-        <!-- <div class="no-offer">
+        {{else}}
+         <div class="no-offer">
                 <p>There are no game offers found!</p>
-            </div> -->
+            </div>
+            {{/if}}
     </section>
 </main>
