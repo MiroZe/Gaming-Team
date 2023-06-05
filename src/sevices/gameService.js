@@ -18,8 +18,35 @@ function createGame ( game) {
 }
 
 
+async function updateGame(gameId, updatedGame) {
+
+  
+        const game = await Game.findById(gameId)
+        game.platform = updatedGame.platform
+        game.name = updatedGame.name
+        game.imageUrl = updatedGame.imageUrl,
+        game.price = updatedGame.price,
+        game.genre = updatedGame.genre,
+        game.description = updatedGame.description
+
+        await game.save()
+
+        
+    } 
+
+
+    function deleteGame(gameId) {
+        return Game.findByIdAndDelete(gameId)
+    }
+
+
+    
+
+
+
 module.exports = {
     getAllGames,
     createGame,
-    findOneGame
+    findOneGame,
+    updateGame
 }

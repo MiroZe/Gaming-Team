@@ -1,6 +1,6 @@
 const gameController = require('express').Router();
 const hasUser = require('../middleware/userControl');
-const { createGame, findOneGame } = require('../sevices/gameService');
+const { createGame, findOneGame, updateGame } = require('../sevices/gameService');
 const parseErrors = require('../utils/parseError');
 const guard = require('../middleware/guard');
 const { getAllGames } = require('../sevices/gameService');
@@ -81,21 +81,21 @@ gameController.post('/create', async (req, res) => {
 
 })
 
-gameController.get('/:gameId/details',guard, async (req,res) => {
+gameController.get('/:gameId/details', guard, async (req, res) => {
 
     const gameId = req.params.gameId
 
     try {
-        
+
         const game = await findOneGame(gameId).lean()
-        console.log(game);
+
         game.isOwner = game.owner == req.user._id
-        
-        
-        res.render('details' , {
+
+
+        res.render('details', {
             title: 'Details Page',
             game
-    
+
         })
     } catch (error) {
         res.render('details', {
@@ -104,7 +104,62 @@ gameController.get('/:gameId/details',guard, async (req,res) => {
     }
 
 
-}) 
+})
+
+gameController.get('/:gameId/edit', async (req, res) => {
+
+    try {
+
+        const game = await findOneGame(req.params.gameId).lean()
+        
+        res.render('edit', {
+            title: 'Edit page',
+            game
+        })
+
+    } catch (error) {
+        res.render('edit', {
+            title: 'Edit page',
+            errors: parseErrors(error),
+            game
+        })
+    }
+
+})
+
+gameController.post('/:gameId/edit' ,guard,  async (req,res) => {
+    
+
+    
+    const updatedGame = {
+        platform: req.body.platform,
+        name: req.body.name,
+        imageUrl: req.body.imageUrl,
+        price: Number(req.body.price),
+        genre: req.body.genre,
+        description: req.body.description,
+        
+    }
+    try {
+        
+
+        if (Object.values(updatedGame).some(f => !f)) {
+            throw new Error('All fields are mandatory')
+        }
+
+        await updateGame(req.params.gameId, updatedGame)
+
+        res.redirect(`/game/${req.params.gameId}/details`)
+        
+    } catch (error) {
+        res.render('edit', {
+            title: 'Edit Page',
+            game : Object.assign(updatedGame, {_id: req.params.gameId}),
+            errors: parseErrors(error)
+        })
+        
+    }
+})
 
 
 module.exports = gameController
