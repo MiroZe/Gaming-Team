@@ -1,6 +1,6 @@
 const gameController = require('express').Router();
 const hasUser = require('../middleware/userControl');
-const { createGame, findOneGame, updateGame } = require('../sevices/gameService');
+const { createGame, findOneGame, updateGame, deleteGame } = require('../sevices/gameService');
 const parseErrors = require('../utils/parseError');
 const guard = require('../middleware/guard');
 const { getAllGames } = require('../sevices/gameService');
@@ -63,7 +63,7 @@ gameController.post('/create', async (req, res) => {
 
 
         await createGame(game)
-        res.redirect('game/catalog')
+        res.redirect('/game/catalog')
 
 
     } catch (error) {
@@ -161,5 +161,23 @@ gameController.post('/:gameId/edit' ,guard,  async (req,res) => {
     }
 })
 
+gameController.get('/:gameId/delete', async (req, res) => {
+
+    try {
+
+         await deleteGame(req.params.gameId)
+        
+        res.redirect('/game/catalog')
+       
+
+    } catch (error) {
+        res.render('home', {
+            title: 'Home page',
+            errors: parseErrors(error),
+            
+        })
+    }
+
+})
 
 module.exports = gameController

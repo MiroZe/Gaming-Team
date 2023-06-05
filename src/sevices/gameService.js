@@ -48,5 +48,6 @@ module.exports = {
     getAllGames,
     createGame,
     findOneGame,
-    updateGame
+    updateGame,
+    deleteGame
 }
