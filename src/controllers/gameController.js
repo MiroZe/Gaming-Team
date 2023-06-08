@@ -118,7 +118,7 @@ gameController.get('/:gameId/details',  async (req, res) => {
 
 })
 
-gameController.get('/:gameId/edit', async (req, res) => {
+gameController.get('/:gameId/edit', guard, async (req, res) => {
 
     try {
 
@@ -173,7 +173,7 @@ gameController.post('/:gameId/edit' ,guard,  async (req,res) => {
     }
 })
 
-gameController.get('/:gameId/delete', async (req, res) => {
+gameController.get('/:gameId/delete',guard, async (req, res) => {
 
     try {
 
@@ -192,7 +192,7 @@ gameController.get('/:gameId/delete', async (req, res) => {
 
 })
 
-gameController.get('/:gameId/buy', async (req,res)=> {
+gameController.get('/:gameId/buy', guard, async (req,res)=> {
     const game = await buyGame(req.params.gameId, req.user._id)
 
     
@@ -201,7 +201,7 @@ gameController.get('/:gameId/buy', async (req,res)=> {
     
 })
 
-gameController.get('/search', async (req,res) => {
+gameController.get('/search', guard, async (req,res) => {
 
     try {
         const foundGames = await getAllGames().lean()
@@ -219,7 +219,7 @@ gameController.get('/search', async (req,res) => {
 
 })
 
-gameController.post('/search', async (req,res) => {
+gameController.post('/search', guard, async (req,res) => {
 
     const nameQuery = (req.body.name).toLowerCase()
     const gamePlatform = req.body.platform   
