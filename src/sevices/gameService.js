@@ -58,7 +58,15 @@ async function buyGame(gameId, userId) {
     return game
 }
 
+function searchGame(nameQuery, gamePlatform) {
 
+    
+    return Game.find()
+    .where({name : { $regex: new RegExp(nameQuery, 'i') }})
+    .where({platform: { $regex: new RegExp(gamePlatform, 'i') }})
+
+
+}
 
 
 
@@ -69,5 +77,6 @@ module.exports = {
     findOneGame,
     updateGame,
     deleteGame,
-    buyGame
+    buyGame,
+    searchGame
 }

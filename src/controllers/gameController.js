@@ -1,6 +1,6 @@
 const gameController = require('express').Router();
 const hasUser = require('../middleware/userControl');
-const { createGame, findOneGame, updateGame, deleteGame, buyGame } = require('../sevices/gameService');
+const { createGame, findOneGame, updateGame, deleteGame, buyGame, searchGame } = require('../sevices/gameService');
 const parseErrors = require('../utils/parseError');
 const guard = require('../middleware/guard');
 const { getAllGames } = require('../sevices/gameService');
@@ -199,6 +199,49 @@ gameController.get('/:gameId/buy', async (req,res)=> {
 
     res.render('details' , {game})
     
+})
+
+gameController.get('/search', async (req,res) => {
+
+    try {
+        const foundGames = await getAllGames().lean()
+        res.render('search' , {
+            title: 'Search Page',
+            foundGames
+        })
+
+    } catch (error) {
+        res.render('search', {
+            title: 'Search Page',
+            errors : parseErrors(error)
+        })
+    }
+
+})
+
+gameController.post('/search', async (req,res) => {
+
+    const nameQuery = (req.body.name).toLowerCase()
+    const gamePlatform = req.body.platform   
+
+    try {
+        const foundGames = await searchGame(nameQuery,gamePlatform).lean()
+
+        res.render('search' , {
+            title: 'Search Page',
+            foundGames
+        })
+        
+    } catch (error) {
+        res.render('search', {
+            title: 'Search Page',
+            errors : parseErrors(error)
+        })
+    }
+
+    
+    
+
 })
 
 module.exports = gameController
