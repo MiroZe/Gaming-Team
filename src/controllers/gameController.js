@@ -1,6 +1,6 @@
 const gameController = require('express').Router();
 const hasUser = require('../middleware/userControl');
-const { createGame, findOneGame, updateGame, deleteGame } = require('../sevices/gameService');
+const { createGame, findOneGame, updateGame, deleteGame, buyGame } = require('../sevices/gameService');
 const parseErrors = require('../utils/parseError');
 const guard = require('../middleware/guard');
 const { getAllGames } = require('../sevices/gameService');
@@ -14,7 +14,7 @@ gameController.get('/catalog', async (req, res) => {
     try {
 
         const allGames = await getAllGames().lean()
-        console.log(req.user);
+        
         if (req.user) {
             allGames.map(r => r.hasUser = true)
         }
@@ -81,17 +81,29 @@ gameController.post('/create', async (req, res) => {
 
 })
 
-gameController.get('/:gameId/details', guard, async (req, res) => {
+gameController.get('/:gameId/details',  async (req, res) => {
 
     const gameId = req.params.gameId
+    const userId = req.user?._id 
+
+    
 
     try {
 
-        const game = await findOneGame(gameId).lean()
+        const game = await findOneGame(gameId).populate('boughtUsers').lean()
+        if(userId) {
 
-        game.isOwner = game.owner == req.user._id
+            const check = game.boughtUsers.some(r => r._id == userId)
+            if(check) {
+                game.alreadyBought = false 
+            } else {
+                game.alreadyBought = true 
+            }
 
-
+            game.isOwner = game.owner == req.user._id
+        }
+        console.log(game);
+        
         res.render('details', {
             title: 'Details Page',
             game
@@ -178,6 +190,15 @@ gameController.get('/:gameId/delete', async (req, res) => {
         })
     }
 
+})
+
+gameController.get('/:gameId/buy', async (req,res)=> {
+    const game = await buyGame(req.params.gameId, req.user._id)
+
+    
+
+    res.render('details' , {game})
+    
 })
 
 module.exports = gameController

@@ -12,7 +12,8 @@ const gameSchema = new Schema( {
     price : {type : Number,required: true, min: 0},
     genre : {type : String,required: true, minLength: [2, 'The genre should be min 2 characters long']},
     description : {type: String, required: true, minLength: [10, 'The description should be min 10 characters long']},
-    owner :{type: Types.ObjectId, ref: 'User', required: true}
+    owner :{type: Types.ObjectId, ref: 'User', required: true},
+    boughtUsers: {type :[Types.ObjectId], ref: 'User', default:[]}
 
 })
 
